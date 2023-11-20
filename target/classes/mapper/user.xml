@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.houselink.mapper.UserMapper">
+	<resultMap type="UserDto" id="user">
+		<result column="userId" property="userId"/>
+		<result column="userName" property="userName"/>
+		<result column="userPass" property="userPass"/>
+		<result column="birth" property="birth"/>
+		<result column="token" property="refreshToken"/>
+	</resultMap>
+
+	<insert id="signup" parameterType="UserDto">
+		insert into users(userId,userName,userPass,birth)
+		values(#{userId},#{userName},#{userPass},#{birth})
+	</insert>
+
+
+	<select id="login" parameterType="UserDto" resultMap="user">
+		select userId, userName
+		from users
+		where userId = #{userId} and userPass = #{userPass}
+	</select>
+	
+	<select id="userInfo" parameterType="string" resultMap="user">
+		select userName, userId, userPass, birth
+		from users
+		where userId = #{userId}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update users
+		set token = #{token}
+		where userId = #{userId}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from users
+		where userId = #{userId}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update users
+		set token = #{token, jdbcType=VARCHAR}
+		where userId = #{userId}
+	</update>
+	
+</mapper>
