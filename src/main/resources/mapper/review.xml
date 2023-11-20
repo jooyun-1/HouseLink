@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.houselink.mapper.ReviewMapper">
+	<resultMap type="ReviewDto" id="review">
+		<result column="reviewId" property="reviewId"/>
+		<result column="email" property="email"/>
+		<result column="content" property="content"/>
+		<result column="createdAt" property="createdAt"/>
+		<result column="aptCode" property="aptCode"/>
+	</resultMap>
+
+	<insert id="createReview" parameterType="reviewDto">
+		insert into review(aptCode,email,content)
+		values(#{aptCode},#{email},#{content})
+	</insert>
+
+
+	<select id="findAllReview" parameterType="Long" resultMap="review">
+		select *
+		from review
+		where aptCode = #{aptCode}
+	</select>
+
+	<select id="findReviewDetail" parameterType="map" resultMap="review">
+		select *
+		from review
+		where aptCode = #{aptCode} and reviewId = #{reviewId}
+	</select>
+<!--	-->
+<!--	<update id="updateReview" parameterType="map">-->
+<!--		update users-->
+<!--		set token = #{token}-->
+<!--		where userId = #{userId}-->
+<!--	</update>-->
+<!--	-->
+	<delete id="deleteReview" parameterType="map">
+		delete
+		from review
+		where aptCode = #{aptCode} and reviewId = #{reviewId}
+	</delete>
+
+</mapper>
