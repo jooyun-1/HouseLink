@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,20 +29,20 @@ public class UserController {
 
     @ApiOperation(value = "회원가입", notes = "회원가입")
     @PostMapping("/signup")
-    public ResponseEntity<Long> signUp(@RequestBody UserDto userDto) throws Exception {
+    public ResponseEntity<Long> signUp(@Valid @RequestBody UserDto userDto) throws Exception {
         return new ResponseEntity<>(userService.signup(userDto), HttpStatus.OK);
     }
 
     @ApiOperation(value = "로그인", notes = "아이디와 비밀번호를 이용하여 로그인 처리.")
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(
-            @RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) UserDto userDto) {
+            @Valid @RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) UserDto userDto) {
+
         Map<String, Object> resultMap = new HashMap<String, Object>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String accessToken = "";
         String refreshToken = "";
         try {
-
             UserDto loginUser = userService.login(userDto);
             if (loginUser != null) {
                 accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
@@ -56,16 +57,16 @@ public class UserController {
                 resultMap.put("access-token", accessToken);
                 resultMap.put("refresh-token", refreshToken);
 
-                status = HttpStatus.CREATED;
             } else {
                 resultMap.put("message", "아이디 또는 패스워드를 확인해주세요.");
                 status = HttpStatus.UNAUTHORIZED;
+                return new ResponseEntity<Map<String, Object>>(resultMap, status);
             }
+
 
         } catch (Exception e) {
             log.debug("로그인 에러 발생 : {}", e);
             resultMap.put("message", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
@@ -102,7 +103,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "로그아웃", notes = "회원 정보를 담은 Token을 제거한다.", response = Map.class)
-    @GetMapping("/logout/{userId}")
+    @PostMapping("/logout/{userId}")
     public ResponseEntity<?> removeToken(@PathVariable ("userId") @ApiParam(value = "로그아웃할 회원의 아이디.", required = true) String userId) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -141,5 +142,6 @@ public class UserController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
 
 }
