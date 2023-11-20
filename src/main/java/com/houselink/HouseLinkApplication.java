@@ -10,4 +10,6 @@ public class HouseLinkApplication {
         SpringApplication.run(HouseLinkApplication.class, args);
     }
 
+
 }
+
