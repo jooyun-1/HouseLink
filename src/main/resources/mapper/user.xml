@@ -9,6 +9,7 @@
 		<result column="userPass" property="userPass"/>
 		<result column="birth" property="birth"/>
 		<result column="token" property="refreshToken"/>
+		<result column="isAdmin" property="isAdmin"/>
 	</resultMap>
 
 	<insert id="signup" parameterType="UserDto">
@@ -24,7 +25,7 @@
 	</select>
 	
 	<select id="userInfo" parameterType="string" resultMap="user">
-		select userName, userId, userPass, birth
+		select userName, userId, userPass, birth,token,isAdmin
 		from users
 		where userId = #{userId}
 	</select>

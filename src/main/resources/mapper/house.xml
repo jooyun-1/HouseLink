@@ -3,7 +3,58 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.houselink.mapper.HouseMapper">
+    <resultMap type="HouseDto" id="house">
+        <result column="no" property="no"/>
+        <result column="houseName" property="houseName"/>
+        <result column="sigunguCode" property="sigunguCode"/>
+        <result column="floor" property="floor"/>
+        <result column="area" property="area"/>
+        <result column="dealYear" property="dealYear"/>
+        <result column="dealMonth" property="dealMonth"/>
+        <result column="dealDay" property="dealDay"/>
+        <result column="dealAmount" property="dealAmount"/>
+        <result column="aptCode" property="aptCode"/>
+    </resultMap>
+
     <select id="findAptCodeByHouseName" parameterType="String" resultType="long">
         select aptcode from houseinfo where apartmentname = #{houseName}
     </select>
+
+    <select id="findAptByAptCode" parameterType="Long">
+        select count(*) from houseinfo where aptCode = #{aptCode}
+    </select>
+
+    <select id="findAptByAptNo" parameterType="Long">
+        select count(*) from housedeal where no = #{no}
+    </select>
+
+    <insert id="createHouse" parameterType="HouseDto">
+        insert into houseinfo(apartmentName,sigunguCode,aptCode)
+        values(#{houseName},#{sigunguCode},#{aptCode});
+
+        insert into housedeal(no,dealAmount, dealYear, dealMonth, dealDay,area,floor,aptCode)
+        values(#{no},#{dealAmount},#{dealYear},#{dealMonth},#{dealDay},#{area},#{floor},#{aptCode});
+    </insert>
+
+    <update id="updateHouse" parameterType="HouseDto">
+        update houseinfo
+        set apartmentName = #{houseName}, sigunguCode = #{sigunguCode}
+        where aptCode = #{aptCode};
+
+        update housedeal
+        set no = #{no}, dealAmount = #{dealAmount}, dealYear = #{dealYear}, dealMonth = #{dealMonth}, dealDay = #{dealDay}, area = #{area}, floor = #{floor}
+        where aptCode = #{aptCode};
+    </update>
+
+
+    <delete id="deleteHouse" parameterType="HouseDto">
+        delete from housedeal
+        where aptCode = #{aptCode};
+
+        delete from houseinfo
+        where aptCode = #{aptCode};
+    </delete>
+
+
 </mapper>
+

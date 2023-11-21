@@ -29,4 +29,5 @@ public class UserDto {
     private String userName;
     private String birth;
     private String refreshToken;
+    private Boolean isAdmin;
 }
