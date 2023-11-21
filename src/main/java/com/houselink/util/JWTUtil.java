@@ -97,7 +97,7 @@ public class JWTUtil {
 	public String getUserId(String authorization) {
 		Jws<Claims> claims = null;
 		try {
-			claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(authorization);
+			claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(authorization.substring(7));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw new UnAuthorizedException();

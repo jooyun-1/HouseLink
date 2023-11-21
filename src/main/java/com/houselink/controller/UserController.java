@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,10 @@ public class UserController {
     private final UserService userService;
     private final JWTUtil jwtUtil;
 
+    @Value("${houselink.admin}")
+    private String Admin;
+
+
     @ApiOperation(value = "회원가입", notes = "회원가입")
     @PostMapping("/signup")
     public ResponseEntity<Long> signUp(@Valid @RequestBody UserDto userDto) throws Exception {
@@ -42,11 +47,16 @@ public class UserController {
         HttpStatus status = HttpStatus.ACCEPTED;
         String accessToken = "";
         String refreshToken = "";
+        String role  = "user";
         try {
             UserDto loginUser = userService.login(userDto);
             if (loginUser != null) {
                 accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
                 refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
+                Boolean isAdmin = userService.userInfo(userDto.getUserId()).getIsAdmin();
+                if(isAdmin){
+                    role = "admin";
+                }
                 log.debug("access token : {}", accessToken);
                 log.debug("refresh token : {}", refreshToken);
 
@@ -56,6 +66,7 @@ public class UserController {
 //				JSON으로 token 전달.
                 resultMap.put("access-token", accessToken);
                 resultMap.put("refresh-token", refreshToken);
+
 
             } else {
                 resultMap.put("message", "아이디 또는 패스워드를 확인해주세요.");
@@ -71,14 +82,14 @@ public class UserController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .header("RefreshToken", "Bearer " + refreshToken)
+                .header("role",role)
                 .build();
 
     }
 
     @ApiOperation(value = "회원 조회", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
-    @GetMapping("/info/{userId}")
-    public ResponseEntity<Map<String, Object>> getInfo(
-            @PathVariable("userId") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userId,
+    @GetMapping("/info")
+    public ResponseEntity<Map<String, Object>> getInfo(@RequestHeader("Authorization") String token,
             HttpServletRequest request) {
 //		logger.debug("userId : {} ", userId);
         Map<String, Object> resultMap = new HashMap<>();
@@ -87,6 +98,7 @@ public class UserController {
             log.info("사용 가능한 토큰!!!");
             try {
 //				로그인 사용자 정보.
+                String userId = jwtUtil.getUserId(token);
                 UserDto userDto = userService.userInfo(userId);
                 resultMap.put("userInfo", userDto);
                 status = HttpStatus.OK;
@@ -103,11 +115,12 @@ public class UserController {
     }
 
     @ApiOperation(value = "로그아웃", notes = "회원 정보를 담은 Token을 제거한다.", response = Map.class)
-    @PostMapping("/logout/{userId}")
-    public ResponseEntity<?> removeToken(@PathVariable ("userId") @ApiParam(value = "로그아웃할 회원의 아이디.", required = true) String userId) {
+    @PostMapping("/logout")
+    public ResponseEntity<?> removeToken(@RequestHeader("Authorization") String token) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         try {
+            String userId = jwtUtil.getUserId(token);
             userService.deleRefreshToken(userId);
             status = HttpStatus.OK;
         } catch (Exception e) {
