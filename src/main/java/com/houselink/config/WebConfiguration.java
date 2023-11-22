@@ -11,33 +11,36 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 public class WebConfiguration implements WebMvcConfigurer {
-	
-	private JWTInterceptor jwtInterceptor;
 
-	public WebConfiguration(JWTInterceptor jwtInterceptor) {
-		super();
-		this.jwtInterceptor = jwtInterceptor;
-	}
+    private JWTInterceptor jwtInterceptor;
 
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
+
+
+    public WebConfiguration(JWTInterceptor jwtInterceptor) {
+        super();
+        this.jwtInterceptor = jwtInterceptor;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
 //		default 설정.
 //		Allow all origins.
 //		Allow "simple" methods GET, HEAD and POST.
 //		Allow all headers.
 //		Set max age to 1800 seconds (30 minutes).
-		registry
-			.addMapping("/**")
-			.allowedOrigins("*")
+        registry
+                .addMapping("/**")
+//                .exposedHeaders("Authorization")
+                .allowedOrigins("*")
 //			.allowedOrigins("http://localhost:5173", "http://localhost:5174")
-			.allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
-						HttpMethod.DELETE.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(),
-						HttpMethod.PATCH.name())
+                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
+                        HttpMethod.DELETE.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(),
+                        HttpMethod.PATCH.name())
 //			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD")
 //			.allowCredentials(true)
 //			.exposedHeaders("*")
-			.maxAge(1800); // Pre-flight Caching
-	}
+                .maxAge(1800); // Pre-flight Caching
+    }
 
 //	@Override
 //	public void addInterceptors(InterceptorRegistry registry) {

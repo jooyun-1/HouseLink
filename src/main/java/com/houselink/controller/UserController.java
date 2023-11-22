@@ -89,8 +89,7 @@ public class UserController {
 
     @ApiOperation(value = "회원 조회", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
     @GetMapping("/info")
-    public ResponseEntity<Map<String, Object>> getInfo(@RequestHeader("Authorization") String token,
-            HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> getInfo(@RequestHeader("Authorization") String token,HttpServletRequest request) {
 //		logger.debug("userId : {} ", userId);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -139,7 +138,7 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String token = request.getHeader("refreshToken");
-        System.out.println(token);
+
         log.debug("token : {}, userDto : {}", token, userService);
         if (jwtUtil.checkToken(token)) {
             if (token.equals(userService.getRefreshToken(userDto.getUserId()))) {
