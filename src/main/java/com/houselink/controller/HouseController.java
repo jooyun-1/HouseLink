@@ -3,7 +3,12 @@ package com.houselink.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+
+import com.houselink.dto.HouseSearchRequestDto;
+import com.houselink.dto.HouseSearchResponseDto;
+
 import com.houselink.dto.HouseDto;
+
 import com.houselink.dto.ReviewDto;
 import com.houselink.service.HouseService;
 import com.houselink.service.UserService;
@@ -16,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/house")
@@ -31,6 +37,15 @@ public class HouseController {
         return ResponseEntity.ok(houseService.getAptCode(houseName));
     }
 
+    @GetMapping
+    public ResponseEntity<List<HouseSearchResponseDto>> findHouseBySigungu(HouseSearchRequestDto houseSearchRequestDto) {
+        return ResponseEntity.ok(houseService.findHouseBySigungu(houseSearchRequestDto));
+    }
+
+    @GetMapping("/search/{searchInput}")
+    public ResponseEntity<List<HouseSearchResponseDto>> findHouseBySearch(@PathVariable String searchInput) {
+        return ResponseEntity.ok(houseService.findHouseBySearch(searchInput));
+    }
     @ApiOperation(value = "아파트 등록", notes = "아파트 등록")
     @PostMapping
     public ResponseEntity<Long> createHouse(@RequestHeader("Authorization") String token,

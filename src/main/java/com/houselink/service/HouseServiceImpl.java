@@ -1,16 +1,24 @@
 package com.houselink.service;
 
+
+import com.houselink.dto.HouseSearchRequestDto;
+import com.houselink.dto.HouseSearchResponseDto;
+
 import com.houselink.dto.HouseDto;
 import com.houselink.dto.UserDto;
 import com.houselink.exception.AlreadyExistAptCode;
 import com.houselink.exception.AlreadyExistAptNo;
 import com.houselink.exception.NotAdminException;
 import com.houselink.exception.NotExistApt;
+
 import com.houselink.mapper.HouseMapper;
 import com.houselink.mapper.UserMapper;
 import com.houselink.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+
+import java.util.List;
 
 import java.sql.SQLException;
 import java.util.UUID;
@@ -27,6 +35,15 @@ public class HouseServiceImpl implements HouseService{
     }
 
     @Override
+
+    public List<HouseSearchResponseDto> findHouseBySigungu(HouseSearchRequestDto houseSearchRequestDto) {
+        return houseMapper.findHouseBySigungu(houseSearchRequestDto);
+    }
+
+    @Override
+    public List<HouseSearchResponseDto> findHouseBySearch(String searchInput) {
+        return houseMapper.findHouseBySearch(searchInput);
+    }
     public Long createHouse(String token, HouseDto houseDto) throws Exception {
         String userId = jwtUtil.getUserId(token);
         //해당 아파트 코드에 대한 아파트가 있으면 예외 던짐
@@ -87,5 +104,6 @@ public class HouseServiceImpl implements HouseService{
         }else{
             throw new NotAdminException();
         }
+
     }
 }
