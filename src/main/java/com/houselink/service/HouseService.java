@@ -3,6 +3,7 @@ package com.houselink.service;
 import com.houselink.dto.HouseSearchRequestDto;
 import com.houselink.dto.HouseSearchResponseDto;
 import com.houselink.dto.HouseDto;
+import com.houselink.dto.LikeDto;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,6 +21,8 @@ public interface HouseService {
     Long updateHouse(String token, HouseDto houseDto) throws Exception;
 
     Long deleteHouse(String token, HouseDto houseDto) throws Exception;
+
+    List<HouseSearchResponseDto> findHouseByAptCode(LikeDto likeDto);
 }
 
 

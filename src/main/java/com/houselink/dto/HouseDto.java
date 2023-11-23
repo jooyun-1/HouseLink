@@ -22,5 +22,4 @@ public class HouseDto {
     private int dealDay;
     private String dealAmount;
     private Long aptCode;
-
 }

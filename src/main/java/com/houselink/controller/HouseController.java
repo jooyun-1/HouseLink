@@ -4,12 +4,8 @@ package com.houselink.controller;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
-import com.houselink.dto.HouseSearchRequestDto;
-import com.houselink.dto.HouseSearchResponseDto;
+import com.houselink.dto.*;
 
-import com.houselink.dto.HouseDto;
-
-import com.houselink.dto.ReviewDto;
 import com.houselink.service.HouseService;
 import com.houselink.service.UserService;
 import com.houselink.util.JWTUtil;
@@ -40,6 +36,11 @@ public class HouseController {
     @GetMapping
     public ResponseEntity<List<HouseSearchResponseDto>> findHouseBySigungu(HouseSearchRequestDto houseSearchRequestDto) {
         return ResponseEntity.ok(houseService.findHouseBySigungu(houseSearchRequestDto));
+    }
+
+    @GetMapping("/apt")
+    public ResponseEntity<List<HouseSearchResponseDto>> findHouseByAptCode(LikeDto likeDto) {
+        return ResponseEntity.ok(houseService.findHouseByAptCode(likeDto));
     }
 
     @GetMapping("/search/{searchInput}")

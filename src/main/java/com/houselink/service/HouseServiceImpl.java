@@ -1,11 +1,8 @@
 package com.houselink.service;
 
 
-import com.houselink.dto.HouseSearchRequestDto;
-import com.houselink.dto.HouseSearchResponseDto;
+import com.houselink.dto.*;
 
-import com.houselink.dto.HouseDto;
-import com.houselink.dto.UserDto;
 import com.houselink.exception.AlreadyExistAptCode;
 import com.houselink.exception.AlreadyExistAptNo;
 import com.houselink.exception.NotAdminException;
@@ -105,5 +102,10 @@ public class HouseServiceImpl implements HouseService{
             throw new NotAdminException();
         }
 
+    }
+
+    @Override
+    public List<HouseSearchResponseDto> findHouseByAptCode(LikeDto likeDto) {
+        return houseMapper.findHouseByAptCode(likeDto);
     }
 }
