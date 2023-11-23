@@ -9,12 +9,17 @@
 		<result column="content" property="content"/>
 		<result column="createdAt" property="createdAt"/>
 		<result column="aptCode" property="aptCode"/>
+		<result column="apartmentName" property="apartmentName"/>
 	</resultMap>
 
 	<insert id="createReview" parameterType="reviewDto">
-		insert into review(aptCode,email,content)
-		values(#{aptCode},#{email},#{content})
+		insert into review(aptCode,email,content,apartmentName)
+		values(#{aptCode},#{email},#{content},#{apartmentName})
 	</insert>
+
+	<select id="findMyReview" parameterType="String" resultMap="review">
+		select * from review where email = #{email} order by createdAt desc
+	</select>
 
 	<select id="findAllReview" parameterType="Long" resultMap="review">
 		select *
@@ -26,6 +31,11 @@
 		select *
 		from review
 		where aptCode = #{aptCode} and reviewId = #{reviewId}
+	</select>
+
+	<select id="findAllReviewList" resultMap="review">
+		select *
+		from review order by createdAt desc
 	</select>
 <!--	-->
 <!--	<update id="updateReview" parameterType="map">-->

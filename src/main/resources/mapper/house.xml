@@ -21,6 +21,11 @@
     </select>
 
 
+    <select id="findHouseNameByAptCode" parameterType="long" resultType="String">
+        select apartmentname from houseinfo where aptCode = #{aptCode}
+    </select>
+
+
     <select id="findHouseBySigungu" parameterType="HouseSearchRequestDto" resultType="hashmap">
         select d.floor, d.area, d.dealYear, d.dealMonth, d.dealDay,d.dealAmount, i.apartmentName, i.lat, i.lng, i.roadName, i.roadNameBonbun
         from housedeal d join houseinfo i on d.aptcode = i.aptcode where i.sigunguCode = #{sigunguCode}
@@ -32,7 +37,6 @@
         from housedeal d join houseinfo i on d.aptcode = i.aptcode where i.apartmentName LIKE CONCAT('%', #{searchInput}, '%') or
         i.roadName LIKE CONCAT('%', #{searchInput}, '%') or i.dong LIKE CONCAT('%', #{searchInput}, '%') limit 50
     </select>
-</mapper>
 
     <select id="findAptByAptCode" parameterType="Long">
         select count(*) from houseinfo where aptCode = #{aptCode}

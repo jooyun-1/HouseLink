@@ -49,4 +49,11 @@ public class UserServiceImpl implements UserService{
     public Long signup(UserDto userDto) throws Exception {
         return userMapper.signup(userDto);
     }
+
+    @Override
+    public Long deleteUser(UserDto userDto) {
+
+        long result = userMapper.deleteUser(userDto);
+        return result;
+    }
 }
