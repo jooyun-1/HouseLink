@@ -15,6 +15,7 @@ import com.houselink.dto.UserDto;
 import com.houselink.exception.AlreadyExistAptCode;
 import com.houselink.exception.AlreadyExistAptNo;
 import com.houselink.exception.NotAdminException;
+import com.houselink.exception.NotExistApt;
 
 import com.houselink.mapper.HouseMapper;
 import com.houselink.mapper.UserMapper;
@@ -81,7 +82,12 @@ public class HouseServiceImpl implements HouseService{
     public Long updateHouse(String token, HouseDto houseDto) throws Exception{
         String userId = jwtUtil.getUserId(token);
         Boolean isAdmin = userMapper.userInfo(userId).getIsAdmin();
-
+        
+        //해당하는 아파트 코드가 없으면 예외 던짐
+        Long aptNo = houseMapper.findAptByAptNo(houseDto.getNo());
+        if(aptNo==0){
+            throw new NotExistApt();
+        }
 //        //해당 아파트 코드에 대한 아파트가 있으면 예외 던짐
 //        Long aptCount = houseMapper.findAptByAptCode(houseDto.getAptCode());
 //        if(aptCount>0){
@@ -104,6 +110,9 @@ public class HouseServiceImpl implements HouseService{
     public Long deleteHouse(String token, HouseDto houseDto) throws Exception{
         String userId = jwtUtil.getUserId(token);
         Boolean isAdmin = userMapper.userInfo(userId).getIsAdmin();
+        Long aptCode = houseMapper.findAptCodeByHouseName(houseDto.getHouseName());
+        houseDto.setAptCode(aptCode);
+
         if(isAdmin){
             return houseMapper.deleteHouse(houseDto);
         }else{
