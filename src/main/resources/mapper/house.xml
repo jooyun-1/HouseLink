@@ -26,10 +26,17 @@
     </select>
 
 
+
     <select id="findHouseBySigungu" parameterType="HouseSearchRequestDto" resultType="hashmap">
         select d.floor, d.area, d.dealYear, d.dealMonth, d.dealDay,d.dealAmount, i.apartmentName, i.lat, i.lng, i.roadName, i.roadNameBonbun
         from housedeal d join houseinfo i on d.aptcode = i.aptcode where i.sigunguCode = #{sigunguCode}
         and d.dealYear = #{dealYear} and d.dealMonth = #{dealMonth} limit 100
+    </select>
+<!--    resultType="hashmap"-->
+    <select id="findHouseByAptCode" parameterType="LikeDto">
+        select d.floor, d.area, d.dealYear, d.dealMonth, d.dealDay,d.dealAmount, i.apartmentName, i.lat, i.lng, i.roadName, i.roadNameBonbun
+        from housedeal d join houseinfo i on d.aptcode = i.aptcode where i.aptcode = #{aptcode} limit 100
+
     </select>
 
     <select id="findHouseBySearch" parameterType="String" resultType="hashmap">

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.houselink.mapper.LikeMapper">
+	<resultMap type="LikeDto" id="like">
+		<result column="likeId" property="likeId"/>
+		<result column="userId" property="userId"/>
+		<result column="aptCode" property="aptCode"/>
+		<result column="apartmentName" property="apartmentName"/>
+	</resultMap>
+
+	<insert id="likeHouse" parameterType="likeDto">
+		insert into userlike(userId,aptCode,apartmentName,floor, dealYear,dealMonth,dealDay,area,dealAmount)
+		values(#{userId},#{aptCode},#{apartmentName},#{floor},#{dealYear},#{dealMonth},#{dealDay},#{area},#{dealAmount})
+	</insert>
+
+	<select id="findLikeHouse" parameterType="String" resultMap="like">
+		select *
+		from userlike
+		where userId = #{userId}
+	</select>
+
+	<select id="confirmLikeHouse" parameterType="likeDto">
+		select count(*)
+		from userlike
+		where userId = #{userId} and apartmentName = #{apartmentName}
+	</select>
+
+
+	<delete id="cancelLikeHouse" parameterType="likeDto">
+		delete
+		from userlike
+		where userId = #{userId} and aptCode = #{aptCode}
+	</delete>
+
+</mapper>

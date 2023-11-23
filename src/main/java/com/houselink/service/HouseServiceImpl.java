@@ -1,6 +1,8 @@
 package com.houselink.service;
 
 
+import com.houselink.dto.*;
+
 
 import com.github.pagehelper.Page;
 import com.houselink.dto.*;
@@ -119,5 +121,10 @@ public class HouseServiceImpl implements HouseService{
             throw new NotAdminException();
         }
 
+    }
+
+    @Override
+    public List<HouseSearchResponseDto> findHouseByAptCode(LikeDto likeDto) {
+        return houseMapper.findHouseByAptCode(likeDto);
     }
 }
