@@ -14,7 +14,9 @@ import java.util.List;
 public interface HouseMapper {
     Long findAptCodeByHouseName(String houseName);
 
+
     String findHouseNameByAptCode(Long aptCode);
+
     List<HouseSearchResponseDto> findHouseBySigungu(HouseSearchRequestDto houseSearchRequestDto);
 
     List<HouseSearchResponseDto> findHouseBySearch(String searchInput);

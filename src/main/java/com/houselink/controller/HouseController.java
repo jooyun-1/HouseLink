@@ -42,6 +42,7 @@ public class HouseController {
 
         return ResponseEntity.ok(houseService.findHouseNameByAptCode(aptCode));
     }
+
     @GetMapping
     public ResponseEntity<List<HouseSearchResponseDto>> findHouseBySigungu(HouseSearchRequestDto houseSearchRequestDto) {
         return ResponseEntity.ok(houseService.findHouseBySigungu(houseSearchRequestDto));
