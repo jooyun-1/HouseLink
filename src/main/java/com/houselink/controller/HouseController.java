@@ -32,6 +32,12 @@ public class HouseController {
 
         return ResponseEntity.ok(houseService.getAptCode(houseName));
     }
+    @ApiOperation(value = "아파트명 조회", notes = "aptCode로 아파트명을 조회한다.")
+    @GetMapping("/aptcode/{aptCode}")
+    public ResponseEntity<String> findAllReview(@PathVariable Long aptCode) throws IOException {
+
+        return ResponseEntity.ok(houseService.findHouseNameByAptCode(aptCode));
+    }
 
     @GetMapping
     public ResponseEntity<List<HouseSearchResponseDto>> findHouseBySigungu(HouseSearchRequestDto houseSearchRequestDto) {

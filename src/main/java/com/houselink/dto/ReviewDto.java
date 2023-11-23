@@ -20,4 +20,5 @@ public class ReviewDto {
     private String content;
     private LocalDate createdAt;
     private Long aptCode;
+    private String apartmentName;
 }

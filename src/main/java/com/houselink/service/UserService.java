@@ -9,4 +9,5 @@ public interface UserService {
     String getRefreshToken(String userId) throws Exception;
     void deleRefreshToken(String userId) throws Exception;
     Long signup(UserDto userDto) throws Exception;
+    Long deleteUser(UserDto userDto);
 }

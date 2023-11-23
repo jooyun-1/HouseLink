@@ -38,6 +38,19 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.findAllReview(aptCode));
     }
 
+    @ApiOperation(value = "내 리뷰 조회", notes = "내가 등록한 리뷰를 모두 조회한다.")
+    @GetMapping("/myreview/{email}")
+    public ResponseEntity<Page<ReviewDto>> findMyReview(@PathVariable String email, @RequestParam(defaultValue = "1") Integer pageNum) throws IOException {
+        PageHelper.startPage(pageNum, 10);
+        return ResponseEntity.ok(reviewService.findMyReview(email));
+    }
+    @ApiOperation(value = "리뷰 전체 조회", notes = "등록된 리뷰를 모두 조회한다.")
+    @GetMapping
+    public ResponseEntity<Page<ReviewDto>> findAllReviewList(@RequestParam(defaultValue = "1") Integer pageNum) throws IOException {
+        PageHelper.startPage(pageNum, 10);
+        return ResponseEntity.ok(reviewService.findAllReviewList());
+    }
+
     @ApiOperation(value = "해당 아파트 리뷰 상세 조회", notes = "해당 아파트의 리뷰를 상세 조회한다.")
     @GetMapping("/{aptCode}/{reviewId}")
     public ResponseEntity<ReviewDto> findReviewDetail(@PathVariable Long aptCode, @PathVariable Long reviewId) throws IOException {

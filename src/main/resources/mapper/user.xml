@@ -47,5 +47,9 @@
 		set token = #{token, jdbcType=VARCHAR}
 		where userId = #{userId}
 	</update>
-	
+
+	<delete id="deleteUser" parameterType="UserDto">
+		delete from users
+		where userId = #{userId} and userPass = #{userPass}
+	</delete>
 </mapper>
