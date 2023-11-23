@@ -139,7 +139,7 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String token = request.getHeader("refreshToken");
-        System.out.println(token);
+
         log.debug("token : {}, userDto : {}", token, userService);
         if (jwtUtil.checkToken(token)) {
             if (token.equals(userService.getRefreshToken(userDto.getUserId()))) {
@@ -156,5 +156,13 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
+    @ApiOperation(value = "회원탈퇴", notes = "회원을 삭제하고, refreshToken을 제거한다", response = Map.class)
+    @DeleteMapping
+    public ResponseEntity<Long> deleteUser(@ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).") @RequestBody UserDto userDto) {
+        Long result = userService.deleteUser(userDto);
+        System.out.println(result + " " + userDto.getUserId());
+        return new ResponseEntity<>(result,HttpStatus.OK);
+
+    }
 
 }

@@ -9,6 +9,8 @@ public interface ReviewMapper {
     Long createReview(ReviewDto reviewDto);
 
     Page<ReviewDto> findAllReview(Long aptCode);
+    Page<ReviewDto> findMyReview(String email);
+    Page<ReviewDto> findAllReviewList();
 
     ReviewDto findReviewDetail(Long aptCode, Long reviewId);
 

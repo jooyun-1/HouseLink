@@ -1,8 +1,10 @@
 package com.houselink.service;
 
+import com.github.pagehelper.Page;
 import com.houselink.dto.HouseSearchRequestDto;
 import com.houselink.dto.HouseSearchResponseDto;
 import com.houselink.dto.HouseDto;
+import com.houselink.dto.ReviewDto;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 public interface HouseService {
     Long getAptCode(String houseName);
 
+    String findHouseNameByAptCode(Long aptCode);
     List<HouseSearchResponseDto> findHouseBySigungu(HouseSearchRequestDto houseSearchRequestDto);
 
     List<HouseSearchResponseDto> findHouseBySearch(String searchInput);

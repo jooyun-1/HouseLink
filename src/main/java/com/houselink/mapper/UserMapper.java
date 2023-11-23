@@ -14,5 +14,6 @@ public interface UserMapper {
     String getRefreshToken(String userid) throws SQLException;
     void deleteRefreshToken(Map<String, String> map) throws SQLException;
 
+    Long deleteUser(UserDto userDto);
     Long signup(UserDto userDto) throws Exception;
 }
