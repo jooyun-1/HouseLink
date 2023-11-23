@@ -16,7 +16,6 @@
 		values(#{aptCode},#{email},#{content})
 	</insert>
 
-
 	<select id="findAllReview" parameterType="Long" resultMap="review">
 		select *
 		from review
